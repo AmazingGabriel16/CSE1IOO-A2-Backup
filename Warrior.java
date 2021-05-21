@@ -29,6 +29,11 @@ public class Warrior extends Hero
 		setHealth(getMaxHealth());
 	}
 	
+	public String getName()
+	{
+		return "Warrior";
+	}
+	
 	public String toString()
 	{
 		return "Warrior[health: " + getHealth() + " | level: " + getLevel() + " | experience: " + getMaxHealth() + " | inventory: " + getInventory() + "]";

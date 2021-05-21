@@ -1,4 +1,4 @@
-public abstract class Hero
+public abstract class Hero implements BattleReady
 {
 	private int health;
 	private int level;
@@ -30,6 +30,11 @@ public abstract class Hero
 		this.maxHealth = maxHealth;
 		this.nextLevelExperience = nextLevelExperience;
 		this.inventory = inventory;
+	}
+	
+	public int attack()
+	{
+		return (int)(Math.random() * 100 * level);
 	}
 	
 	public boolean usePotion(int size)
@@ -164,9 +169,10 @@ public abstract class Hero
 	{
 		inventory.addPotions(otherInventory);
 	}
-	
+
 	// Abstract methods
 	
 	public abstract void display();
 	public abstract void upgradeStats();
+	public abstract String getName();
 }

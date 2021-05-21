@@ -52,6 +52,11 @@ public class Mage extends Hero
 		setHealth(getMaxHealth());
 	}
 	
+	public String getName()
+	{
+		return "Mage";
+	}
+	
 	public String toString()
 	{
 		return "Mage[health: " + getHealth() + " | level: " + getLevel() + " | experience: " + getMaxHealth() + " | inventory: " + getInventory() + " | healRate: " + getHealRate() + "]";

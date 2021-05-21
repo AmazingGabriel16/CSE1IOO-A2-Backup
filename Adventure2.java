@@ -98,9 +98,121 @@ public class Adventure2
 		}
 	}
 	
+	private boolean battle(BattleReady fighter1, BattleReady fighter2)
+	{
+		int fighterFainted = 0;
+		
+		// Fighter 1 attacks first
+		int fighter1Attack = fighter1.attack();
+		fighter2.takeDamage(fighter1Attack);
+		System.out.println(fighter1.getName() + " does " + fighter1Attack + "damage!");
+		
+		// Faint checker
+		if (fighter2.getHealth() <= 0)
+		{
+			System.out.println(fighter2.getName() + " fainted...");
+			fighterFainted = 1;
+		}
+		else
+		{
+			System.out.println(fighter2.getName() + " has " + fighter2.getHealth() + "health remaining.");
+			System.out.println("-----------------------------------------------------------------------");
+			keyboard.nextLine();
+		}
+		
+		// Fighter 2 attacks second
+		int fighter2Attack = fighter2.attack();
+		fighter1.takeDamage(fighter2Attack);
+		System.out.println(fighter2.getName() + " does " + fighter2Attack + "damage!");
+		
+		// Faint checker
+		if (fighter1.getHealth() <= 0)
+		{
+			System.out.println(fighter1.getName() + " fainted...");
+			fighterFainted = 2;
+		}
+		else
+		{
+			System.out.println(fighter1.getName() + " has " + fighter1.getHealth() + "health remaining.");
+			System.out.println("-----------------------------------------------------------------------");
+			keyboard.nextLine();
+		}
+		
+		// End
+		if (fighterFainted == 1) // Player 2 fainted, player 1 wins
+		{
+			return true;
+		}
+		else if (fighterFainted == 2) // Player 1 fainted, player 2 wins
+		{
+			return false;
+		}
+		else
+		{
+			// Recursion
+			battle(fighter1, fighter2);
+		}
+		
+		// Will never be reached, but for compiling
+		return false;
+	}
+	
 	private void singleBattle()
 	{
-		
+		// Checks if hero exists
+		if (hero != null) // True - The hero exists
+		{
+			System.out.println("Enter the monster's name >> ");
+			String monsterName = keyboard.nextLine();
+			
+			// So the user only has to repeat the monsterLevel
+			// and not the monsterName.
+			
+			int monsterLevel = 0;
+			
+			try
+			{
+				System.out.println("Enter the monster's level >> ");
+				monsterLevel = readInt(1,20);
+				keyboard.nextLine();
+			}
+			catch (TooManyAttemptsException e)
+			{
+				System.out.println(e.getMessage());
+				keyboard.nextLine();
+			}
+			
+			// Results
+			boolean battleResults;
+			
+			// Checks the levels
+			if (hero.getLevel() < monsterLevel)
+			{
+				battleResults = battle(hero,new Monster(monsterName,monsterLevel));
+				
+				// If hero wins, battleResults == true
+				if (battleResults == true)
+				{
+					hero.addPotions(new Monster(monsterName,monsterLevel).rewardPotions());
+				}
+			}
+			else
+			{
+				battleResults = battle(new Monster(monsterName,monsterLevel),hero);
+				
+				// If hero looses, battleResults == false
+				if (battleResults == false)
+				{
+					// Reset's the user's hero to nothing
+					// User will need a new hero
+					hero = null;
+				}
+			}
+		}
+		else // False - The hero does not exist
+		{
+			System.out.println("\nNo hero exists!");
+		}	
 	}
 	
 	private void battleFromList()
@@ -273,7 +385,7 @@ public class Adventure2
 	
 	private void loadHero()
 	{
-		boolean noOverwrite = true;
+		boolean overwrite = true;
 		boolean readConfirmed = false;
 		
 		// Re-usables
@@ -293,15 +405,15 @@ public class Adventure2
 				// If the user has selected yes, then continue
 				// Otherwise, exit this method
 				
-				if (userInputChar == 'Y')
+				if (userInputChar == 'N')
 				{
-					// The user will create a hero
-					noOverwrite = false;
+					// The user will not create a hero
+					overwrite = false;
 				}
 			}		
-	
+
 			// If overwrite is confirmed
-			if (noOverwrite == false)
+			if (overwrite == true)
 			{
 				File file = new File("data/hero.bin");
 				File fileDir = new File("data");

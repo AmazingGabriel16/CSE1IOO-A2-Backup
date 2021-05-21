@@ -46,6 +46,11 @@ public class Archer extends Hero
 		setHealth(getMaxHealth());
 	}
 	
+	public String getName()
+	{
+		return "Archer";
+	}
+	
 	public String toString()
 	{
 		return "Archer[health: " + getHealth() + " | level: " + getLevel() + " | experience: " + getMaxHealth() + " | inventory: " + getInventory() + " | bonusExp: " + getBonusExp() + "]";
