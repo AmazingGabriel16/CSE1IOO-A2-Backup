@@ -100,18 +100,16 @@ public class Adventure2
 	
 	private boolean battle(BattleReady fighter1, BattleReady fighter2)
 	{
-		int fighterFainted = 0;
-		
 		// Fighter 1 attacks first
 		int fighter1Attack = fighter1.attack();
-		fighter2.takeDamage(fighter1Attack);
 		System.out.println(fighter1.getName() + " does " + fighter1Attack + "damage!");
 		
 		// Faint checker
-		if (fighter2.getHealth() <= 0)
+		if (!fighter2.takeDamage(fighter1Attack))
 		{
 			System.out.println(fighter2.getName() + " fainted...");
-			fighterFainted = 1;
+			keyboard.nextLine();
+			return true;
 		}
 		else
 		{
@@ -122,14 +120,14 @@ public class Adventure2
 		
 		// Fighter 2 attacks second
 		int fighter2Attack = fighter2.attack();
-		fighter1.takeDamage(fighter2Attack);
 		System.out.println(fighter2.getName() + " does " + fighter2Attack + "damage!");
 		
 		// Faint checker
-		if (fighter1.getHealth() <= 0)
+		if (!fighter1.takeDamage(fighter2Attack))
 		{
 			System.out.println(fighter1.getName() + " fainted...");
-			fighterFainted = 2;
+			keyboard.nextLine();
+			return false;
 		}
 		else
 		{
@@ -138,23 +136,8 @@ public class Adventure2
 			keyboard.nextLine();
 		}
 		
-		// End
-		if (fighterFainted == 1) // Player 2 fainted, player 1 wins
-		{
-			return true;
-		}
-		else if (fighterFainted == 2) // Player 1 fainted, player 2 wins
-		{
-			return false;
-		}
-		else
-		{
-			// Recursion
-			battle(fighter1, fighter2);
-		}
-		
-		// Will never be reached, but for compiling
-		return false;
+		// Recursion
+		return battle(fighter1, fighter2);
 	}
 	
 	private void singleBattle()
@@ -184,6 +167,7 @@ public class Adventure2
 			
 			// Results
 			boolean battleResults;
+			boolean heroWins = false;
 			
 			// Checks the levels
 			if (hero.getLevel() < monsterLevel)
@@ -193,20 +177,31 @@ public class Adventure2
 				// If hero wins, battleResults == true
 				if (battleResults == true)
 				{
-					hero.addPotions(new Monster(monsterName,monsterLevel).rewardPotions());
+					heroWins = true;
 				}
 			}
 			else
 			{
 				battleResults = battle(new Monster(monsterName,monsterLevel),hero);
 				
-				// If hero looses, battleResults == false
+				// If hero wins, battleResults == false
 				if (battleResults == false)
 				{
-					// Reset's the user's hero to nothing
-					// User will need a new hero
-					hero = null;
+					heroWins = true;
 				}
+			}
+			
+			// Hero wins or looses check
+			if (heroWins == true)
+			{
+				// Reward potions
+				hero.addPotions(new Monster(monsterName,monsterLevel).rewardPotions());
+				hero.gainExperience((int)(Math.random() * 100));
+			}
+			else if (heroWins == false)
+			{
+				// Kill hero
+				hero = null;
 			}
 		}
 		else // False - The hero does not exist
