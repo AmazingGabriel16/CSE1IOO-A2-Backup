@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Adventure
+public class Adventure2
 {
 	//Do not edit attributes
 	private Hero hero;
@@ -9,7 +9,7 @@ public class Adventure
 	
 	public static void main(String [] args)
 	{
-		Adventure adventure = new Adventure();
+		Adventure2 adventure = new Adventure2();
 		System.out.println("*** Name StudentNumber ***");
 		System.out.println("***   Gabriel Tobing   ***");
 		System.out.println("***      20722072      ***");
@@ -17,7 +17,7 @@ public class Adventure
 		adventure.run();
 	}
 	
-	public Adventure() 
+	public Adventure2() 
 	{
 		keyboard = new Scanner(System.in);
 		
@@ -58,8 +58,8 @@ public class Adventure
 		System.out.println("1. Create Hero");
 		System.out.println("2. Display Hero");
 		System.out.println("3. Heal Hero");
-		System.out.println("4. Damage Hero");
-		System.out.println("5. Give Hero Experience");
+		System.out.println("4. Single battle");
+		System.out.println("5. Battle from List");
 		System.out.println("6. Save Hero to File");
 		System.out.println("7. Load Hero from File");
 		System.out.println("0. Quit");
@@ -82,11 +82,11 @@ public class Adventure
 		}
 		else if(choice == 4)
 		{
-			damageHero();
+			singleBattle();
 		}
 		else if(choice == 5)
 		{
-			giveHeroExperience();
+			battleFromList();
 		}
 		else if(choice == 6)
 		{
@@ -96,6 +96,16 @@ public class Adventure
 		{
 			loadHero();
 		}
+	}
+	
+	private void singleBattle()
+	{
+		
+	}
+	
+	private void battleFromList()
+	{
+		
 	}
 	
 	private void healHero()
@@ -155,68 +165,6 @@ public class Adventure
 		{
 			System.out.println("\nNo hero exists!");
 		}			
-	}
-	
-	private void giveHeroExperience()
-	{		
-		// Checks if hero exists
-		if (hero != null) // True - The hero exists
-		{	
-			try
-			{
-				System.out.println("How much experience do you want to give the hero <0 - 100000>?");
-				boolean levelStatus = hero.gainExperience(readInt(0, 100000));
-				
-				if (levelStatus == true) // Hero has leveld up
-				{
-					System.out.println("\nHero has leveled up!");
-				}
-				else // Hero has not leveled up
-				{
-					System.out.println("\nHero has received some new experience");
-				}
-			}
-			catch (TooManyAttemptsException e)
-			{
-				System.out.println(e.getMessage());
-			}
-		}
-		else // False - The hero does not exist
-		{
-			System.out.println("\nNo hero exists!");
-		}		
-	}
-	
-	private void damageHero()
-	{
-		// Checks if hero exists
-		if (hero != null) // True - The hero exists
-		{
-			try
-			{
-				System.out.println("How much do you want to damage the hero <0 - 100000>?");
-				boolean healthStatus = hero.takeDamage(readInt(0, 100000));
-				
-				if (healthStatus == true) // Hero has not fainted
-				{
-					System.out.println("\nHero has taken damange");
-				}
-				else // Hero has fainted
-				{
-					System.out.println("\nHero has fainted!");
-					System.out.println("You will need a new hero!");
-				}
-			}
-			catch (TooManyAttemptsException e)
-			{
-				System.out.println(e.getMessage());
-			}
-		}
-		else // False - The hero does not exist
-		{
-			System.out.println("\nNo hero exists!");
-		}
-		
 	}
 	
 	private void saveHero()
@@ -284,6 +232,7 @@ public class Adventure
 					output.writeInt(hero.getLevel());
 					output.writeInt(hero.getExperience());
 					output.writeInt(hero.getMaxHealth());
+					output.writeInt(hero.getNextLevelExperience());
 					
 					if (hero instanceof Archer) // Archer
 					{
@@ -299,6 +248,8 @@ public class Adventure
 					output.writeInt(hero.getInventory().getSmallPotions());
 					output.writeInt(hero.getInventory().getMediumPotions());
 					output.writeInt(hero.getInventory().getLargePotions());
+
+					
 					
 					output.close();
 					
@@ -386,6 +337,7 @@ public class Adventure
 					int level = input.readInt();
 					int experience = input.readInt();
 					int maxHealth = input.readInt();
+					int nextLevelExperience = input.readInt();
 					
 					
 					// Specialised
@@ -413,17 +365,17 @@ public class Adventure
 					// Constructors
 					if (heroType.equals("Archer")) // Archer
 					{
-						hero = new Archer(health, level, experience, maxHealth, new Inventory(smallPotion, mediumotion, largePotion), bonusExp);
+						hero = new Archer(health, level, experience, maxHealth, nextLevelExperience, new Inventory(smallPotion, mediumotion, largePotion), bonusExp);
 						System.out.println("\u001B[32m" + "\nArcher loaded!" + "\u001B[0m");
 					}
 					else if (heroType.equals("Warrior"))
 					{
-						hero = new Warrior(health, level, experience, maxHealth, new Inventory(smallPotion, mediumotion, largePotion));
+						hero = new Warrior(health, level, experience, maxHealth, nextLevelExperience, new Inventory(smallPotion, mediumotion, largePotion));
 						System.out.println("\u001B[32m" + "\nWarrior loaded!" + "\u001B[0m");
 					}
 					else // Mage
 					{
-						hero = new Mage(health, level, experience, maxHealth, new Inventory(smallPotion, mediumotion, largePotion), healRate);
+						hero = new Mage(health, level, experience, maxHealth, nextLevelExperience, new Inventory(smallPotion, mediumotion, largePotion), healRate);
 						System.out.println("\u001B[32m" + "\nMage loaded!" + "\u001B[0m");
 					}
 					

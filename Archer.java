@@ -10,9 +10,9 @@ public class Archer extends Hero
 		this.bonusExp = 0.5;
 	}
 	
-	public Archer(int health, int level, int experience, int maxHealth, Inventory inventory, double bonusExp)
+	public Archer(int health, int level, int experience, int maxHealth, int nextLevelExperience, Inventory inventory, double bonusExp)
 	{
-		super(health, level, experience, maxHealth, inventory);
+		super(health, level, experience, maxHealth, nextLevelExperience, inventory);
 		this.bonusExp = bonusExp;
 	}
 	

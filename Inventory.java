@@ -20,6 +20,13 @@ public class Inventory
 		this.largePotions = largePotions;
 	}
 	
+	public void addPotions(Inventory otherInventory)
+	{
+		smallPotions += otherInventory.getSmallPotions();
+		mediumPotions += otherInventory.getMediumPotions();
+		largePotions += otherInventory.getLargePotions();
+	}
+	
 	public int getSmallPotions()
 	{
 		return smallPotions;

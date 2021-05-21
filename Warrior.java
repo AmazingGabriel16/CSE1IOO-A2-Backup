@@ -6,9 +6,9 @@ public class Warrior extends Hero
 		super();
 	}
 	
-	public Warrior(int health, int level, int experience, int maxHealth, Inventory inventory)
+	public Warrior(int health, int level, int experience, int maxHealth, int nextLevelExperience, Inventory inventory)
 	{
-		super(health, level, experience, maxHealth, inventory);
+		super(health, level, experience, maxHealth, nextLevelExperience, inventory);
 	}
 	
 	public void display()

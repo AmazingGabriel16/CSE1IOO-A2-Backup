@@ -9,9 +9,9 @@ public class Mage extends Hero
 		this.healRate = 10;
 	}
 	
-	public Mage(int health, int level, int experience, int maxHealth, Inventory inventory, int healRate)
+	public Mage(int health, int level, int experience, int maxHealth, int nextLevelExperience, Inventory inventory, int healRate)
 	{
-		super(health, level, experience, maxHealth, inventory);
+		super(health, level, experience, maxHealth, nextLevelExperience, inventory);
 		this.healRate = healRate;
 	}
 	

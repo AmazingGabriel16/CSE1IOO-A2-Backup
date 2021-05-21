@@ -5,6 +5,7 @@ public abstract class Hero
 	private int experience;
 	private int maxHealth;
 	private Inventory inventory;
+	private int nextLevelExperience;
 	
 	/* Note for inventory
 	
@@ -21,12 +22,13 @@ public abstract class Hero
 		inventory = new Inventory();
 	}
 	
-	public Hero(int health, int level, int experience, int maxHealth, Inventory inventory)
+	public Hero(int health, int level, int experience, int maxHealth, int nextLevelExperience, Inventory inventory)
 	{
 		this.health = health;
 		this.level = level;
 		this.experience = experience;
 		this.maxHealth = maxHealth;
+		this.nextLevelExperience = nextLevelExperience;
 		this.inventory = inventory;
 	}
 	
@@ -75,12 +77,12 @@ public abstract class Hero
 		int overflowExp = 0;
 		
 		// Checks to see if the amount is greater than 1000
-		if (amount >= 1000)
+		if (amount >= nextLevelExperience)
 		{
 			// This keeps left over Exp to the next level
-			while(amount >= 1000)
+			while(amount >= nextLevelExperience)
 			{
-				amount -= 1000;
+				amount -= nextLevelExperience;
 				overflowExp = amount;
 				incrementLevel();
 			}
@@ -119,6 +121,7 @@ public abstract class Hero
 	
 	public void incrementLevel()
 	{
+		nextLevelExperience = nextLevelExperience*2;
 		level++;
 		
 		// This is a abstract method
@@ -150,6 +153,16 @@ public abstract class Hero
 	public Inventory getInventory()
 	{
 		return inventory;
+	}
+	
+	public int getNextLevelExperience()
+	{
+		return nextLevelExperience;
+	}
+	
+	public void addPotions(Inventory otherInventory)
+	{
+		inventory.addPotions(otherInventory);
 	}
 	
 	// Abstract methods
